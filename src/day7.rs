@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use petgraph::{Graph, visit::{EdgeRef}};
+use petgraph::{Graph, visit::{Bfs, EdgeRef, Reversed}};
 use petgraph::algo::has_path_connecting;
 use regex::Regex;
 
@@ -40,6 +40,22 @@ fn solve_part1(graph: &Graph<String, u32>) -> usize {
         if has_path_connecting(graph, node, shiny_gold_bag, None) {
             count_connecting += 1;
         }
+    }
+
+    count_connecting
+}
+
+#[aoc(day7, part1, bfs)]
+fn solve_part1_bfs(graph: &Graph<String, u32>) -> usize {
+    let shiny_gold_bag = graph.node_indices().find(|i| graph[*i] == "shiny gold").unwrap();
+    let mut count_connecting = 0;
+
+    let graph = Reversed(graph);
+    let mut bfs = Bfs::new(graph, shiny_gold_bag);
+    // skip first node
+    bfs.next(&graph);
+    while let Some(_) = bfs.next(&graph) {
+        count_connecting += 1;
     }
 
     count_connecting
