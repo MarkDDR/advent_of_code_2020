@@ -49,7 +49,6 @@ fn solve_part2(input: &[i64]) -> i64 {
             sum += last;
 
             if sum == target {
-                dbg!(window_size);
                 let min = window.iter().min().unwrap();
                 let max = window.iter().max().unwrap();
                 return min + max;
